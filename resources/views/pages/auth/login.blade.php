@@ -48,7 +48,7 @@
 
             <div class="flex items-center justify-end">
                 <flux:button
-                    variant="primary"
+                    variant="primary" color="violet"
                     type="submit"
                     class="w-full cursor-pointer flex items-center justify-center gap-2"
                     x-bind:disabled="loading"
