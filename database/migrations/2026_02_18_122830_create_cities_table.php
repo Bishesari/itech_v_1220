@@ -11,19 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('cities', function (Blueprint $table) {
             $table->id();
-
-            $table->string('contact_value', 100); // شماره موبایل یا شماره تلفن یا آدرس پست الکترونیک
-            $table->enum('type', ['mobile', 'phone', 'email', 'whatsapp', 'telegram'])->default('mobile');
-
-            $table->boolean('is_verified')->default(false);
+            $table->foreignId('province_id')->constrained()->cascadeOnDelete();
+            $table->string('name', 40);   // بوشهر
+            $table->string('slug', 40)->index(); // bushehr
             $table->boolean('is_active')->default(true);
-
             $table->timestamps();
 
-            $table->unique(['type', 'contact_value']);
-
+            $table->unique(['province_id', 'slug']);
         });
     }
 
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('cities');
     }
 };

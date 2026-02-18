@@ -41,9 +41,9 @@
             </flux:otp>
 
 
-{{--            @if($otp_log_check_err)--}}
-{{--                <flux:text class="text-center" color="rose">{{$otp_log_check_err}}</flux:text>--}}
-{{--            @endif--}}
+            @if($otp_log_check_err)
+                <flux:text class="text-center" color="rose">{{$otp_log_check_err}}</flux:text>
+            @endif
 
             <div class="space-y-4">
                 @if ($timer > 0)

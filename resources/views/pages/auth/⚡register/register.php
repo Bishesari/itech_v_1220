@@ -1,13 +1,16 @@
 <?php
 
 use App\Jobs\OtpSend;
+use App\Jobs\SmsPass;
 use App\Models\Contact;
+use App\Models\InstituteUser;
 use App\Models\OtpLog;
 use App\Models\User;
 use App\Rules\NCode;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -94,21 +97,15 @@ class extends Component
             return;
         }
 
-        $this->u_otp = '';
-
-        // Generate numeric OTP
-        //        $otp = 123456;
         $otp = NumericOTP();
-
-        // Encrypt OTP for storage (so DB leak doesn't reveal codes)
-        $encryptedOtp = encrypt($otp);
+        $this->u_otp = '';
 
         // Create log record
         OtpLog::create([
             'ip' => request()->ip(),
             'n_code' => $this->n_code,
             'contact_value' => $this->contact_value,
-            'otp' => $encryptedOtp,
+            'otp' => $otp,
             'otp_next_try_time' => time() + self::OTP_RESEND_DELAY,
             'otp_expires_at' => now()->addSeconds(self::OTP_TTL),
         ]);
@@ -233,17 +230,7 @@ class extends Component
             return;
         }
 
-        // Compare decrypted OTP
-        try {
-            $storedOtp = decrypt($latest->otp);
-        } catch (\Throwable $e) {
-            // corrupted/invalid ciphertext -> treat as non-match / expired
-            $this->otp_log_check_err = 'کد پیامکی نامعتبر یا منقضی است.';
-
-            return;
-        }
-
-        if (! hash_equals((string) $storedOtp, (string) $this->u_otp)) {
+        if (! Hash::check($this->u_otp, $latest->otp)) {
             $this->otp_log_check_err = 'کد پیامکی اشتباه است.';
 
             return;
@@ -259,10 +246,11 @@ class extends Component
                 'password' => $tempPass,
             ]);
 
-            BranchRoleUser::create([
+            $assignment = InstituteUser::create([
                 'user_id' => $user->id,
                 'role_id' => 1,
-                'assigned_by' => $user->id,
+                'is_last_selected' => true,
+                'assigned_by_id' => $user->id,
             ]);
 
             // remove OTP logs for this n_code + mobile
@@ -291,10 +279,15 @@ class extends Component
             SmsPass::dispatch($this->contact_value, $this->n_code, $tempPass);
 
             session()->regenerate();
+
             session([
-                'active_role_id' => 1,
-                'active_branch_id' => null,
-                'color' => 'teal',
+                'active_context' => [
+                    'assignment_id' => $assignment->id,
+                    'role_id' => $assignment->role_id,
+                    'scope' => $assignment->role->scope,
+                    'institute_id' => $assignment->institute_id,
+                    'branch_id' => $assignment->branch_id,
+                ],
             ]);
 
             event(new Registered($user));
@@ -305,7 +298,7 @@ class extends Component
         // stop client timer and redirect or reload
         $this->dispatch('stop_timer');
 
-        return redirect()->to($this->redirect ?? route('home'));
+        return redirect()->to(route('home'));
     }
 
     public function reset_all(): void

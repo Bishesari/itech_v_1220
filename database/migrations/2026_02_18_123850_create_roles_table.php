@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-
-            $table->string('contact_value', 100); // شماره موبایل یا شماره تلفن یا آدرس پست الکترونیک
-            $table->enum('type', ['mobile', 'phone', 'email', 'whatsapp', 'telegram'])->default('mobile');
-
-            $table->boolean('is_verified')->default(false);
+            $table->string('slug', 50)->unique();
+            $table->string('name', 50)->unique();
+            // سطح نقش
+            $table->enum('scope', ['system', 'institute', 'branch']);
+            $table->string('color', 20)->nullable();
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
-
-            $table->unique(['type', 'contact_value']);
-
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('roles');
     }
 };
