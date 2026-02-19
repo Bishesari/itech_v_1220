@@ -7,9 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware(['auth', EnsureContextIsSelected::class])->group(function () {
+Route::middleware(['auth', 'ac'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
-    Route::livewire('roles', 'pages::role.index')->name('role.index');
+    Route::livewire('roles', 'pages::role.index')->name('role.index')->middleware('role:super-admin');
 
 });
 
