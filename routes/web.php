@@ -9,6 +9,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth', EnsureContextIsSelected::class])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::livewire('roles', 'pages::role.index')->name('role.index');
+
 });
 
 
