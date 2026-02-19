@@ -10,7 +10,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'ac'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::livewire('roles', 'pages::role.index')->name('role.index')->middleware('role:super-admin');
-
+    Route::livewire('provinces', 'pages::province.index')->name('province.index')->middleware('role:super-admin');
 });
 
 

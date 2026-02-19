@@ -3,10 +3,13 @@
 use App\Models\Role;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-new class extends Component
+new
+#[Title('نقشهای کاربری')]
+class extends Component
 {
     use WithPagination;
 

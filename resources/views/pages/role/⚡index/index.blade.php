@@ -38,7 +38,7 @@
 
         <flux:table.rows>
             @foreach ($this->roles as $role)
-                <flux:table.row class="transition duration-500 {{ $highlightRoleId === $role->id ? 'bg-green-100 dark:bg-green-900/40' : '' }}">
+                <flux:table.row class="dark:hover:bg-stone-900/80 transition duration-300 hover:bg-zinc-100" :key="$role->id">
                     <flux:table.cell>{{ $role->id }}</flux:table.cell>
                     <flux:table.cell>{{ $role->name }}</flux:table.cell>
                     <flux:table.cell>{{ $role->slug }}</flux:table.cell>
