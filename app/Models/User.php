@@ -27,11 +27,10 @@ class User extends Authenticatable
 
     public function initials(): string
     {
-        return Str::of($this->name)
-            ->explode(' ')
-            ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
-            ->implode('');
+        $first = $this->profile->f_name_fa ? Str::substr($this->profile->f_name_fa, 0, 1) : '';
+        $last = $this->profile->l_name_fa ? Str::substr($this->profile->l_name_fa, 0, 1) : '';
+
+        return trim($first.' '.$last);
     }
 
     public function profile(): HasOne
@@ -90,6 +89,7 @@ class User extends Authenticatable
     {
         return $this->activeAssignment()?->role;
     }
+
     public function activeBranch(): ?Branch
     {
         return $this->activeAssignment()?->branch;
@@ -99,6 +99,7 @@ class User extends Authenticatable
     {
         return $this->activeAssignment()?->institute;
     }
+
     public function hasRole(string $role, ?Institute $institute = null, ?Branch $branch = null): bool
     {
         return $this->roles()
@@ -109,5 +110,4 @@ class User extends Authenticatable
             )
             ->exists();
     }
-
 }

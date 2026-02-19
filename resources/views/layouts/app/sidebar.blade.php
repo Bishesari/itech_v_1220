@@ -46,7 +46,7 @@
         </flux:sidebar.item>
     </flux:sidebar.nav>
 
-    <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name"/>
+    <x-desktop-user-menu class="hidden lg:block"/>
 </flux:sidebar>
 
 
@@ -72,8 +72,8 @@
                         />
 
                         <div class="grid flex-1 text-start text-sm leading-tight">
-                            <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
-                            <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
+                            <flux:heading class="truncate">{{ auth()->user()->profile->f_name_fa . ' ' . auth()->user()->profile->l_name_fa }}</flux:heading>
+                            <flux:text class="truncate">{{ auth()->user()->user_name }}</flux:text>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
 
             <flux:menu.radio.group>
                 <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
-                    {{ __('Settings') }}
+                    {{ __('تنظیمات') }}
                 </flux:menu.item>
             </flux:menu.radio.group>
 
@@ -98,7 +98,7 @@
                     class="w-full cursor-pointer"
                     data-test="logout-button"
                 >
-                    {{ __('Log Out') }}
+                    {{ __('خروج') }}
                 </flux:menu.item>
             </form>
         </flux:menu>
