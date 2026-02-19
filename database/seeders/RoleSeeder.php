@@ -14,7 +14,7 @@ class RoleSeeder extends Seeder
     {
         $roles = [
             ['slug' => 'newbie',            'name' => 'تازه وارد',        'scope' => 'system',    'color' => 'blue',    'is_active' => true],
-            ['slug' => 'super_admin',       'name' => 'سوپر ادمین',       'scope' => 'system',    'color' => 'red',      'is_active' => true],
+            ['slug' => 'super-admin',       'name' => 'سوپر ادمین',       'scope' => 'system',    'color' => 'red',      'is_active' => true],
 
             ['slug' => 'founder',           'name' => 'موسس',             'scope' => 'institute', 'color' => 'teal',   'is_active' => true],
 
@@ -25,11 +25,11 @@ class RoleSeeder extends Seeder
             ['slug' => 'student',           'name' => 'کارآموز',          'scope' => 'branch',    'color' => 'lime',     'is_active' => true],
             ['slug' => 'marketer',          'name' => 'بازاریاب',         'scope' => 'branch',    'color' => 'green',    'is_active' => true],
 
-            ['slug' => 'question_maker',    'name' => 'طراح سوال',        'scope' => 'institute', 'color' => 'purple',   'is_active' => true],
-            ['slug' => 'question_auditor',  'name' => 'ممیز سوال',        'scope' => 'system',    'color' => 'violet',   'is_active' => true],
+            ['slug' => 'question-maker',    'name' => 'طراح سوال',        'scope' => 'institute', 'color' => 'purple',   'is_active' => true],
+            ['slug' => 'question-auditor',  'name' => 'ممیز سوال',        'scope' => 'system',    'color' => 'violet',   'is_active' => true],
             ['slug' => 'examiner',          'name' => 'آزمونگر',          'scope' => 'system',    'color' => 'yellow',   'is_active' => true],
 
-            ['slug' => 'job_seeker',        'name' => 'کارجو',            'scope' => 'system',    'color' => 'emerald',  'is_active' => true],
+            ['slug' => 'job-seeker',        'name' => 'کارجو',            'scope' => 'system',    'color' => 'emerald',  'is_active' => true],
             ['slug' => 'examinee',          'name' => 'آزمون دهنده',      'scope' => 'system',    'color' => 'sky',      'is_active' => true],
             ['slug' => 'employer',          'name' => 'کارفرما',          'scope' => 'system',    'color' => 'cyan',     'is_active' => true],
         ];

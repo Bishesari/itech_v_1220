@@ -35,12 +35,9 @@
                     class:input="tracking-widest text-center"
                     dir="ltr"
                 />
-
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('بازیابی کلمه عبور') }}
-                    </flux:link>
-                @endif
+                <flux:link class="absolute top-0 text-sm end-0" :href="route('forgot-password')" wire:navigate>
+                    {{ __('بازیابی کلمه عبور') }}
+                </flux:link>
             </div>
 
             <!-- Remember Me -->
