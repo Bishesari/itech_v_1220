@@ -20,7 +20,7 @@ class extends Component
 
     public ?int $deletingProvinceId = null;
 
-    public ?int $highlightProvinceId = null;
+    public ?int $highlightedId = null;
 
     public int $perPage = 10;
 
@@ -102,19 +102,17 @@ class extends Component
             return;
         }
 
-        $beforeCount = Province::where('name_fa', '<', $province->name_fa)->count();
+        $beforeCount = Province::where('name', '<', $province->name)->count();
         $page = intdiv($beforeCount, $this->perPage) + 1;
         $this->gotoPage($page);
 
-        $this->highlightProvinceId = $id;
-        $this->dispatch('remove-highlight')->self();
+        $this->highlightedId = $id;
     }
 
     #[On('province-updated')]
     public function provinceUpdated($id = null): void
     {
-        $this->highlightProvinceId = $id;
-        $this->dispatch('remove-highlight')->self();
+        $this->highlightedId = $id;
     }
 
     #[On('province-deleted')]

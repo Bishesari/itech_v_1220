@@ -5,7 +5,7 @@
 
     <div class="inline-flex mt-2 mb-4">
         <flux:text>{{__('استان ها')}}</flux:text>
-{{--        <livewire:province.create/>--}}
+        <livewire:pages::province.create />
     </div>
 
     <flux:separator variant="subtle"/>
@@ -37,74 +37,85 @@
 
             <flux:table.column>{{ __('عملیات') }}</flux:table.column>
         </flux:table.columns>
+
         <flux:table.rows>
+            @if($highlightedId)
+                <div x-data x-init="setTimeout(() => $wire.set('highlightedId', null), 2000)"></div>
+            @endif
 
             @foreach ($this->provinces as $province)
-                <flux:table.row wire:key="province-row-{{ $province->id }}" class="transition duration-500 {{ $highlightProvinceId === $province->id ? 'bg-green-100 dark:bg-green-900/40' : '' }}">
-                    <flux:table.cell>{{ $province->id }}</flux:table.cell>
-                    <flux:table.cell>{{ $province->name }}</flux:table.cell>
-                    <flux:table.cell>{{ $province->slug }}</flux:table.cell>
-                    <flux:table.cell class="text-center">
-                        <flux:badge color="green" size="sm"
-                                    inset="top bottom">{{ $province->cities_count }}</flux:badge>
-                    </flux:table.cell>
+                    @php
+                        $class='';
+                        if($highlightedId === $province->id){
+                            $class='bg-green-100 dark:bg-green-900/40';
+                        }
+                    @endphp
 
-                    <flux:table.cell>
+                    <flux:table.row class=" {{$class}} dark:hover:bg-stone-900/80 transition duration-300 hover:bg-zinc-100" :key="$province->id">
+                        <flux:table.cell>{{ $province->id }}</flux:table.cell>
+                        <flux:table.cell>{{ $province->name }}</flux:table.cell>
+                        <flux:table.cell>{{ $province->slug }}</flux:table.cell>
+                        <flux:table.cell class="text-center">
+                            <flux:badge color="green" size="sm"
+                                        inset="top bottom">{{ $province->cities_count }}</flux:badge>
+                        </flux:table.cell>
 
-                        <div class="inline-flex items-center gap-2">
+                        <flux:table.cell>
 
-                            <flux:badge size="sm" color="{{ $province->is_active ? 'green' : 'red' }}">
-                                {{ $province->is_active ? 'فعال' : 'غیرفعال' }}
-                            </flux:badge>
+                            <div class="inline-flex items-center gap-2">
 
-                            @php
-                                $checked = $province->is_active ? 'checked' : null;
-                            @endphp
-                            <flux:switch :$checked
-                                         wire:key="province-switch-{{ $province->id }}-{{ $province->is_active }}"
-                                         wire:click="toggleStatus({{ $province->id }})"
-                                         wire:loading.attr="disabled"
-                            />
+                                <flux:badge size="sm" color="{{ $province->is_active ? 'green' : 'red' }}">
+                                    {{ $province->is_active ? 'فعال' : 'غیرفعال' }}
+                                </flux:badge>
 
-                        </div>
-                    </flux:table.cell>
+                                @php
+                                    $checked = $province->is_active ? 'checked' : null;
+                                    @endphp
+                                <flux:switch :$checked
+                                             wire:key="province-switch-{{ $province->id }}-{{ $province->is_active }}"
+                                             wire:click="toggleStatus({{ $province->id }})"
+                                             wire:loading.attr="disabled"
+                                />
 
-                    <flux:table.cell class="whitespace-nowrap"><x-my.crup :date="$province->jalali_created_at" /></flux:table.cell>
-                    <flux:table.cell class="whitespace-nowrap"><x-my.crup :date="$province->jalali_updated_at" /></flux:table.cell>
+                            </div>
+                        </flux:table.cell>
+
+                        <flux:table.cell class="whitespace-nowrap"><x-my.crup :date="$province->jalali_created_at" /></flux:table.cell>
+                        <flux:table.cell class="whitespace-nowrap"><x-my.crup :date="$province->jalali_updated_at" /></flux:table.cell>
 
 
-                    <flux:table.cell>
-                        <div class="inline-flex items-center gap-2">
-{{--                            <flux:link href="{{ route('city.index', $province) }}" variant="subtle" wire:navigate x-data="{ loading: false }" @click="loading = true">--}}
-{{--                                <span x-show="!loading" class="text-blue-500">{{ __('شهرها') }}</span>--}}
-{{--                                <flux:icon.loading x-show="loading" class="size-5 text-blue-500 mr-3"/>--}}
-{{--                            </flux:link>--}}
+                        <flux:table.cell>
+                            <div class="inline-flex items-center gap-2">
+                            <flux:link href="{{ route('city.index', $province) }}" variant="subtle" wire:navigate x-data="{ loading: false }" @click="loading = true">
+                                <span x-show="!loading" class="text-blue-500">{{ __('شهرها') }}</span>
+                                <flux:icon.loading x-show="loading" class="size-5 text-blue-500 mr-3"/>
+                            </flux:link>
 
-{{--                            <livewire:province.edit :province="$province" :key="'province-edit-'.$province->id"/>--}}
+                                <livewire:pages::province.edit :province="$province" :key="'province-edit-'.$province->id"/>
 
-                            <flux:tooltip content="حذف استان" position="bottom">
-                                <div class="inline-block">
+                                <flux:tooltip content="حذف استان" position="bottom">
+                                    <div class="inline-block">
                                     {{-- حالت عادی: نمایش آیکون سطل آشغال --}}
                                     {{-- وقتی روی confirmDelete با این ID خاص کلیک شد، این مخفی شود --}}
-                                    <div wire:loading.remove wire:target="confirmDelete({{ $province->id }})">
-                                        <flux:icon.trash
-                                            variant="micro"
-                                            class="cursor-pointer size-5 text-red-500 dark:text-red-400"
-                                            wire:click="confirmDelete({{ $province->id }})"
-                                        />
-                                    </div>
+                                        <div wire:loading.remove wire:target="confirmDelete({{ $province->id }})">
+                                            <flux:icon.trash
+                                                variant="micro"
+                                                class="cursor-pointer size-5 text-red-500 dark:text-red-400"
+                                                wire:click="confirmDelete({{ $province->id }})"
+                                            />
+                                        </div>
                                     {{-- حالت لودینگ: نمایش آیکون چرخنده --}}
                                     {{-- فقط وقتی نمایش داده شود که confirmDelete با این ID خاص صدا زده شده --}}
-                                    <div wire:loading wire:target="confirmDelete({{ $province->id }})">
-                                        <flux:icon.loading class="size-5 text-red-500 dark:text-red-400" />
+                                        <div wire:loading wire:target="confirmDelete({{ $province->id }})">
+                                            <flux:icon.loading class="size-5 text-red-500 dark:text-red-400" />
+                                        </div>
                                     </div>
-                                </div>
-                            </flux:tooltip>
+                                </flux:tooltip>
 
-                        </div>
-                    </flux:table.cell>
-                </flux:table.row>
-            @endforeach
+                            </div>
+                        </flux:table.cell>
+                    </flux:table.row>
+                @endforeach
         </flux:table.rows>
     </flux:table>
 

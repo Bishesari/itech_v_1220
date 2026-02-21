@@ -11,6 +11,7 @@ Route::middleware(['auth', 'ac'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::livewire('roles', 'pages::role.index')->name('role.index')->middleware('role:super-admin');
     Route::livewire('provinces', 'pages::province.index')->name('province.index')->middleware('role:super-admin');
+    Route::livewire('province/{province}/cities', 'pages::province.city.index')->name('city.index')->middleware('role:super-admin');
 });
 
 
