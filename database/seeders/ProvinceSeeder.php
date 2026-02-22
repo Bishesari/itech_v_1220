@@ -14,9 +14,6 @@ class ProvinceSeeder extends Seeder
     {
         $provinces = [
             ['name' => 'بوشهر', 'slug' => 'Bushehr'],
-            ['name' => 'فارس', 'slug' => 'Fars'],
-            ['name' => 'اصفهان', 'slug' => 'Isfahan'],
-            ['name' => 'تهران', 'slug' => 'Tehran'],
         ];
         foreach ($provinces as $data) {
             Province::create($data);
