@@ -70,7 +70,7 @@ new class extends Component
         if (! $city) {
             return;
         }
-        $beforeCount = City::where('name', '<', $city->name_fa)->count();
+        $beforeCount = City::where('name', '<', $city->name)->count();
         $page = intdiv($beforeCount, $this->perPage) + 1;
         $this->gotoPage($page);
         $this->highlightedId = $id;

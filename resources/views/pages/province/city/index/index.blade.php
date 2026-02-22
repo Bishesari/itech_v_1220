@@ -12,7 +12,7 @@
             </flux:breadcrumbs.item>
             <flux:breadcrumbs.item>{{$province->name}}</flux:breadcrumbs.item>
         </flux:breadcrumbs>
-{{--        <livewire:province.city.create :province_id="$province->id"/>--}}
+        <livewire:pages::province.city.create :province_id="$province->id"/>
     </div>
 
     <flux:separator variant="subtle"/>
@@ -43,9 +43,19 @@
         </flux:table.columns>
         <flux:table.rows>
 
+            @if($highlightedId)
+                <div x-data x-init="setTimeout(() => $wire.set('highlightedId', null), 2000)"></div>
+            @endif
+
             @foreach ($this->cities as $city)
-                <flux:table.row
-                    class="transition duration-500 {{ $highlightCityId === $city->id ? 'bg-green-100 dark:bg-green-900/40' : '' }}">
+                @php
+                    $class='';
+                    if($highlightedId === $city->id){
+                        $class='bg-green-100 dark:bg-green-900/40';
+                    }
+                @endphp
+                <flux:table.row class=" {{$class}} dark:hover:bg-stone-900/80 transition duration-300 hover:bg-zinc-100" :key="$city->id">
+
                     <flux:table.cell>{{ $city->id }}</flux:table.cell>
                     <flux:table.cell>{{ $city->name }}</flux:table.cell>
                     <flux:table.cell>{{ $city->slug }}</flux:table.cell>
@@ -75,7 +85,7 @@
 
                     <flux:table.cell>
                         <div class="inline-flex items-center gap-2">
-{{--                            <livewire:province.city.edit :$city :key="'city-edit-'.$city->id"/>--}}
+                            <livewire:pages::province.city.edit :$city :key="'city-edit-'.$city->id"/>
 {{--                            <livewire:province.city.delete :$city :key="'city-delete-'.$city->id"/>--}}
                         </div>
                     </flux:table.cell>
