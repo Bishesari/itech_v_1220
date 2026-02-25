@@ -31,7 +31,7 @@ new class extends Component
     {
         $this->province->update($this->validate());
         $this->modal('edit-province-'.$this->province->id)->close();
-
+        $this->dispatch('province-updated', id: $this->province->id);
         Flux::toast(
             heading: 'تغییرات اعمال شد.',
             text: 'استان '.$this->name.' با موفقیت ویرایش شد.',
@@ -39,6 +39,5 @@ new class extends Component
             position: 'top right'
         );
 
-        $this->dispatch('province-updated', id: $this->province->id);
     }
 };

@@ -86,32 +86,21 @@
 
 
                         <flux:table.cell>
-                            <div class="inline-flex items-center gap-2">
-                            <flux:link href="{{ route('city.index', $province) }}" variant="subtle" wire:navigate x-data="{ loading: false }" @click="loading = true">
-                                <span x-show="!loading" class="text-blue-500">{{ __('شهرها') }}</span>
-                                <flux:icon.loading x-show="loading" class="size-5 text-blue-500 mr-3"/>
-                            </flux:link>
 
-                                <livewire:pages::province.edit :province="$province" :key="'province-edit-'.$province->id"/>
+                            <div class="inline-flex items-center gap-2">
+                                <flux:button size="sm" variant="subtle" href="{{ route('city.index', $province) }}" wire:navigate x-data="{ loading: false }" @click="loading = true">
+                                    <span x-show="!loading" class="text-blue-500">{{ __('شهرها') }}</span>
+                                    <flux:icon.loading x-show="loading" class="size-5 text-blue-500"/>
+                                </flux:button>
+
+                                <livewire:pages::province.edit :$province :key="'province-edit-'.$province->id"/>
 
                                 <flux:tooltip content="حذف استان" position="bottom">
-                                    <div class="inline-block">
-                                    {{-- حالت عادی: نمایش آیکون سطل آشغال --}}
-                                    {{-- وقتی روی confirmDelete با این ID خاص کلیک شد، این مخفی شود --}}
-                                        <div wire:loading.remove wire:target="confirmDelete({{ $province->id }})">
-                                            <flux:icon.trash
-                                                variant="micro"
-                                                class="cursor-pointer size-5 text-red-500 dark:text-red-400"
-                                                wire:click="confirmDelete({{ $province->id }})"
-                                            />
-                                        </div>
-                                    {{-- حالت لودینگ: نمایش آیکون چرخنده --}}
-                                    {{-- فقط وقتی نمایش داده شود که confirmDelete با این ID خاص صدا زده شده --}}
-                                        <div wire:loading wire:target="confirmDelete({{ $province->id }})">
-                                            <flux:icon.loading class="size-5 text-red-500 dark:text-red-400" />
-                                        </div>
-                                    </div>
+                                    <flux:button icon="trash" size="xs" variant="primary" color="red" class="cursor-pointer"
+                                                 wire:click="confirmDelete({{ $province->id }})">
+                                    </flux:button>
                                 </flux:tooltip>
+
 
                             </div>
                         </flux:table.cell>
@@ -125,11 +114,10 @@
     {{--    Confirm Delete Modal   --}}
     <flux:modal name="confirm" class="md:w-96">
         <div class="space-y-6">
-            <div>
-                <flux:heading size="lg">{{__('حذف استان ')}} <span
-                        class="font-bold text-red-500 dark:text-red-400">{{$this->provinceToDelete?->name }}</span></flux:heading>
-                <flux:text class="mt-2">{{__('با تایید اطلاعات مربوطه حذف خواهند شد.')}}</flux:text>
-            </div>
+            <flux:heading size="lg">{{__('حذف استان ')}}
+                <span class="font-bold text-red-500 dark:text-red-400">{{$this->provinceToDelete?->name }}</span>
+            </flux:heading>
+            <flux:text class="mt-2">{{__('با تایید اطلاعات مربوطه حذف خواهند شد.')}}</flux:text>
 
             <div class="flex gap-2">
                 {{-- دکمه تایید با لودینگ --}}

@@ -2,6 +2,7 @@
 
 use App\Models\Province;
 use Flux\Flux;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
@@ -28,14 +29,16 @@ class extends Component
     {
         if ($this->sortBy === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortBy = $column;
-            $this->sortDirection = 'asc';
+
+            return;
         }
+        $this->sortBy = $column;
+        $this->sortDirection = 'asc';
+
     }
 
     #[Computed]
-    public function provinces()
+    public function provinces(): LengthAwarePaginator
     {
         return Province::query()
             ->orderBy($this->sortBy, $this->sortDirection)
@@ -46,10 +49,13 @@ class extends Component
     #[Computed]
     public function provinceToDelete()
     {
-        return $this->deletingProvinceId ? Province::find($this->deletingProvinceId) : null;
+        if (! $this->deletingProvinceId) {
+            return null;
+        }
+        return Province::find($this->deletingProvinceId);
     }
 
-    public function confirmDelete($id): void
+    public function confirmDelete(int $id): void
     {
         $this->deletingProvinceId = $id;
         $this->modal('confirm')->show();
@@ -59,15 +65,21 @@ class extends Component
     {
         $province = $this->provinceToDelete();
 
+        if (! $province) {
+            $this->modal('confirm')->close();
+            $this->deletingProvinceId = null;
+            return;
+        }
+
         $province->delete();
+
         $this->modal('confirm')->close();
-        // ریست کردن متغیر
         $this->deletingProvinceId = null;
 
         $this->dispatch('province-deleted');
 
         Flux::toast(
-            heading: 'حذف شد.',
+            heading: 'حذف شد',
             text: 'استان با موفقیت حذف شد.',
             variant: 'danger',
             position: 'top right'
@@ -81,6 +93,7 @@ class extends Component
         $province->update([
             'is_active' => ! $province->is_active,
         ]);
+
         Flux::toast(
             heading: 'به‌روزرسانی شد',
             text: 'وضعیت استان با موفقیت تغییر کرد.',
@@ -90,10 +103,14 @@ class extends Component
     }
 
     #[On('province-created')]
-    public function provinceCreated($id = null): void
+    public function provinceCreated(?int $id = null): void
     {
-        $this->reset('sortBy');
-        $this->reset('sortDirection');
+        $this->reset(['sortBy', 'sortDirection']);
+
+        if (! $id) {
+            return;
+        }
+
         $province = Province::find($id);
         if (! $province) {
             return;
@@ -101,21 +118,38 @@ class extends Component
 
         $beforeCount = Province::where('name', '<', $province->name)->count();
         $page = intdiv($beforeCount, $this->perPage) + 1;
-        $this->gotoPage($page);
 
+        $this->gotoPage($page);
         $this->highlightedId = $id;
     }
 
     #[On('province-updated')]
-    public function provinceUpdated($id = null): void
+    public function provinceUpdated(?int $id = null): void
     {
+        $this->reset(['sortBy', 'sortDirection']);
+
+        if (! $id) {
+            return;
+        }
+
+        $province = Province::find($id);
+        if (! $province) {
+            return;
+        }
+
+        $beforeCount = Province::where('name', '<', $province->name)->count();
+        $page = intdiv($beforeCount, $this->perPage) + 1;
+
+        $this->gotoPage($page);
         $this->highlightedId = $id;
     }
+
 
     #[On('province-deleted')]
     public function afterDelete(): void
     {
         $provinces = $this->provinces();
+
         if ($provinces->isEmpty() && $provinces->currentPage() > 1) {
             $this->previousPage();
         }

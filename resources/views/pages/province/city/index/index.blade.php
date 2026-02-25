@@ -86,7 +86,8 @@
                     <flux:table.cell>
                         <div class="inline-flex items-center gap-2">
                             <livewire:pages::province.city.edit :$city :key="'city-edit-'.$city->id"/>
-{{--                            <livewire:province.city.delete :$city :key="'city-delete-'.$city->id"/>--}}
+
+                            {{--                            <livewire:province.city.delete :$city :key="'city-delete-'.$city->id"/>--}}
                         </div>
                     </flux:table.cell>
                 </flux:table.row>

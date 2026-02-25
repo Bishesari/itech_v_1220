@@ -5,11 +5,14 @@ use App\Models\Province;
 use Flux\Flux;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
-new class extends Component
+new
+#[Title('شهرها')]
+class extends Component
 {
     public Province $province;
 
