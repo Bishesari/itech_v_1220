@@ -81,9 +81,6 @@ class extends Component
         $province->update([
             'is_active' => ! $province->is_active,
         ]);
-
-        $this->dispatch('province-updated');
-
         Flux::toast(
             heading: 'به‌روزرسانی شد',
             text: 'وضعیت استان با موفقیت تغییر کرد.',

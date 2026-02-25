@@ -74,8 +74,6 @@
                                          wire:key="province-switch-{{ $city->id }}-{{ $city->is_active }}"
                                          wire:click="toggleStatus({{ $city->id }})"
                                          wire:loading.attr="disabled"
-
-
                             />
 
                         </div>

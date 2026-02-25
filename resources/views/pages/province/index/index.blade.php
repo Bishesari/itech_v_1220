@@ -38,10 +38,11 @@
             <flux:table.column>{{ __('عملیات') }}</flux:table.column>
         </flux:table.columns>
 
+        @if($highlightedId)
+            <div x-data x-init="setTimeout(() => $wire.set('highlightedId', null), 2000)"></div>
+        @endif
         <flux:table.rows>
-            @if($highlightedId)
-                <div x-data x-init="setTimeout(() => $wire.set('highlightedId', null), 2000)"></div>
-            @endif
+
 
             @foreach ($this->provinces as $province)
                     @php
