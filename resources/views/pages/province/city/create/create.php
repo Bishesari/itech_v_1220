@@ -8,20 +8,23 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public $province_id;
+    public ?int $provinceId = null;
 
     public Province $province;
 
-    public bool $show_btn = true;
+    public bool $showBtn = true;
 
     public string $name = '';
 
     public string $slug = '';
 
-    public function mount($province_id = null): void
+    public function mount(?int $provinceId = null): void
     {
-        $this->province_id = $province_id;
-        $this->province = Province::find($province_id);
+        $this->provinceId = $provinceId;
+
+        if ($provinceId) {
+            $this->province = Province::findOrFail($provinceId);
+        }
     }
 
     protected function rules(): array
@@ -31,7 +34,6 @@ new class extends Component
             'slug' => ['required', 'min:2', Rule::unique('cities', 'slug')],
         ];
     }
-
     public function save(): void
     {
         $validated = $this->validate();
@@ -42,17 +44,15 @@ new class extends Component
         $this->dispatch('city-created', id: $city->id);
 
         Flux::toast(
-            heading: 'ثبت شد.',
             text: 'شهر جدید با موفقیت ثبت شد.',
+            heading: 'ثبت شد.',
             variant: 'success',
             position: 'top right'
         );
     }
-
-    public function reset_prop(): void
+    public function resetForm(): void
     {
-        $this->reset('name');
-        $this->reset('slug');
+        $this->reset(['name', 'slug']);
         $this->resetErrorBag();
     }
 };

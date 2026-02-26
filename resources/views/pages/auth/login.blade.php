@@ -18,7 +18,7 @@
                         type="text"
                         required
                         autofocus
-                        autocomplete="off"
+                        autocomplete="nope"
                         class:input="tracking-widest text-center"
                         dir="ltr"
             />
@@ -30,7 +30,7 @@
                     :label="__('کلمه عبور')"
                     type="password"
                     required
-                    autocomplete="current-password"
+                    autocomplete="new-password"
                     viewable
                     class:input="tracking-widest text-center"
                     dir="ltr"

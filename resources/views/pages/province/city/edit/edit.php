@@ -27,15 +27,18 @@ new class extends Component
         $this->slug = $this->city->slug;
     }
 
-    public function update_city(): void
+    public function update(): void
     {
-        $this->city->update($this->validate());
+        $validated = $this->validate();
+
+        $this->city->update($validated);
+
         $this->modal('edit-city-'.$this->city->id)->close();
         $this->dispatch('city-updated', id: $this->city->id);
 
         Flux::toast(
-            heading: 'تغییرات اعمال شد.',
             text: 'شهر '.$this->name.' با موفقیت ویرایش شد.',
+            heading: 'تغییرات اعمال شد.',
             variant: 'warning',
             position: 'top right'
         );

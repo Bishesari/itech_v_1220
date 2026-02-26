@@ -12,7 +12,7 @@
             </flux:breadcrumbs.item>
             <flux:breadcrumbs.item>{{$province->name}}</flux:breadcrumbs.item>
         </flux:breadcrumbs>
-        <livewire:pages::province.city.create :province_id="$province->id"/>
+        <livewire:pages::province.city.create :provinceId="$province->id"/>
     </div>
 
     <flux:separator variant="subtle"/>
@@ -86,8 +86,7 @@
                     <flux:table.cell>
                         <div class="inline-flex items-center gap-2">
                             <livewire:pages::province.city.edit :$city :key="'city-edit-'.$city->id"/>
-
-                            {{--                            <livewire:province.city.delete :$city :key="'city-delete-'.$city->id"/>--}}
+                            <livewire:pages::province.city.delete :$city :key="'city-delete-'.$city->id"/>
                         </div>
                     </flux:table.cell>
                 </flux:table.row>

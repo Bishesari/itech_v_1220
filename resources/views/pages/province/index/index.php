@@ -46,45 +46,6 @@ class extends Component
             ->paginate($this->perPage);
     }
 
-    #[Computed]
-    public function provinceToDelete()
-    {
-        if (! $this->deletingProvinceId) {
-            return null;
-        }
-        return Province::find($this->deletingProvinceId);
-    }
-
-    public function confirmDelete(int $id): void
-    {
-        $this->deletingProvinceId = $id;
-        $this->modal('confirm')->show();
-    }
-
-    public function deleteProvince(): void
-    {
-        $province = $this->provinceToDelete();
-
-        if (! $province) {
-            $this->modal('confirm')->close();
-            $this->deletingProvinceId = null;
-            return;
-        }
-
-        $province->delete();
-
-        $this->modal('confirm')->close();
-        $this->deletingProvinceId = null;
-
-        $this->dispatch('province-deleted');
-
-        Flux::toast(
-            heading: 'حذف شد',
-            text: 'استان با موفقیت حذف شد.',
-            variant: 'danger',
-            position: 'top right'
-        );
-    }
 
     public function toggleStatus(int $provinceId): void
     {
@@ -95,36 +56,16 @@ class extends Component
         ]);
 
         Flux::toast(
-            heading: 'به‌روزرسانی شد',
             text: 'وضعیت استان با موفقیت تغییر کرد.',
+            heading: 'به‌روزرسانی شد',
             variant: 'warning',
             position: 'top right'
         );
     }
 
     #[On('province-created')]
-    public function provinceCreated(?int $id = null): void
-    {
-        $this->reset(['sortBy', 'sortDirection']);
-
-        if (! $id) {
-            return;
-        }
-
-        $province = Province::find($id);
-        if (! $province) {
-            return;
-        }
-
-        $beforeCount = Province::where('name', '<', $province->name)->count();
-        $page = intdiv($beforeCount, $this->perPage) + 1;
-
-        $this->gotoPage($page);
-        $this->highlightedId = $id;
-    }
-
     #[On('province-updated')]
-    public function provinceUpdated(?int $id = null): void
+    public function focusRecord(?int $id = null): void
     {
         $this->reset(['sortBy', 'sortDirection']);
 
@@ -136,10 +77,8 @@ class extends Component
         if (! $province) {
             return;
         }
-
         $beforeCount = Province::where('name', '<', $province->name)->count();
         $page = intdiv($beforeCount, $this->perPage) + 1;
-
         $this->gotoPage($page);
         $this->highlightedId = $id;
     }

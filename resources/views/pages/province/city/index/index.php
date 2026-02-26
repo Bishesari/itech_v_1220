@@ -3,6 +3,7 @@
 use App\Models\City;
 use App\Models\Province;
 use Flux\Flux;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
@@ -26,18 +27,20 @@ class extends Component
 
     public int $perPage = 10;
 
-    public function sort(string $column): void
+    public function sort($column): void
     {
         if ($this->sortBy === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortBy = $column;
-            $this->sortDirection = 'asc';
+
+            return;
         }
+        $this->sortBy = $column;
+        $this->sortDirection = 'asc';
+
     }
 
     #[Computed]
-    public function cities()
+    public function cities(): LengthAwarePaginator
     {
         return City::query()
             ->where('province_id', $this->province->id)
@@ -56,18 +59,22 @@ class extends Component
         $this->dispatch('city-updated');
 
         Flux::toast(
-            heading: 'به‌روزرسانی شد',
             text: 'وضعیت شهر با موفقیت تغییر کرد.',
+            heading: 'به‌روزرسانی شد',
             variant: 'warning',
             position: 'top right'
         );
     }
 
     #[On('city-created')]
-    public function cityCreated($id = null): void
+    #[On('city-updated')]
+    public function focusRecord(?int $id = null): void
     {
-        $this->reset('sortBy');
-        $this->reset('sortDirection');
+        $this->reset(['sortBy', 'sortDirection']);
+
+        if (! $id) {
+            return;
+        }
 
         $city = City::find($id);
         if (! $city) {
@@ -76,12 +83,6 @@ class extends Component
         $beforeCount = City::where('name', '<', $city->name)->count();
         $page = intdiv($beforeCount, $this->perPage) + 1;
         $this->gotoPage($page);
-        $this->highlightedId = $id;
-    }
-
-    #[On('city-updated')]
-    public function cityUpdated($id = null): void
-    {
         $this->highlightedId = $id;
     }
 

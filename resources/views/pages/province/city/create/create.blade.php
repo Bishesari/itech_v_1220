@@ -1,12 +1,12 @@
 <div>
-    @if($show_btn)
+    @if($showBtn)
         <flux:tooltip content="شهر جدید" position="left">
             <flux:icon.plus-circle variant="micro" class="cursor-pointer size-5 text-blue-500 mr-4"
                                    x-on:click="$flux.modal('new-city').show()"/>
         </flux:tooltip>
     @endif
 
-    <flux:modal name="new-city" :show="$errors->isNotEmpty()" focusable class="md:w-96" @close="reset_prop"
+    <flux:modal name="new-city" :show="$errors->isNotEmpty()" focusable class="md:w-96" @close="resetForm"
                 :dismissible="false">
         <div class="space-y-6">
             <div>

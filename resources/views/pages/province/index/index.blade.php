@@ -94,13 +94,7 @@
                                 </flux:button>
 
                                 <livewire:pages::province.edit :$province :key="'province-edit-'.$province->id"/>
-
-                                <flux:tooltip content="حذف استان" position="bottom">
-                                    <flux:button icon="trash" size="xs" variant="primary" color="red" class="cursor-pointer"
-                                                 wire:click="confirmDelete({{ $province->id }})">
-                                    </flux:button>
-                                </flux:tooltip>
-
+                                <livewire:pages::province.delete :$province :key="'province-delete-'.$province->id"/>
 
                             </div>
                         </flux:table.cell>
@@ -108,30 +102,4 @@
                 @endforeach
         </flux:table.rows>
     </flux:table>
-
-
-
-    {{--    Confirm Delete Modal   --}}
-    <flux:modal name="confirm" class="md:w-96">
-        <div class="space-y-6">
-            <flux:heading size="lg">{{__('حذف استان ')}}
-                <span class="font-bold text-red-500 dark:text-red-400">{{$this->provinceToDelete?->name }}</span>
-            </flux:heading>
-            <flux:text class="mt-2">{{__('با تایید اطلاعات مربوطه حذف خواهند شد.')}}</flux:text>
-
-            <div class="flex gap-2">
-                {{-- دکمه تایید با لودینگ --}}
-                <flux:button wire:click="deleteProvince" variant="primary" color="red" size="sm" class="flex-1 cursor-pointer">
-                    <span wire:target="deleteProvince">{{__('تایید حذف')}}</span>
-                </flux:button>
-
-                {{-- دکمه انصراف --}}
-                <flux:button x-on:click="$flux.modal('confirm').close()" variant="ghost" size="sm" class="flex-1 cursor-pointer">
-                    {{__('انصراف')}}
-                </flux:button>
-            </div>
-        </div>
-    </flux:modal>
-
-
 </div>
