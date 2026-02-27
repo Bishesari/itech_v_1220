@@ -12,7 +12,7 @@
             </flux:heading>
             <flux:text class="mt-2">{{__('اطلاعات استان را جهت ویرایش وارد کنید.')}}</flux:text>
 
-            <form wire:submit.prevent="update_province" class="space-y-4 flex flex-col gap-3" autocomplete="off">
+            <form wire:submit.prevent="update" class="space-y-4 flex flex-col gap-3" autocomplete="off">
                 <x-my.flt_lbl name="name" label="{{__('نام شهر فارسی:')}}" maxlength="40"
                               class="tracking-wider font-semibold" autofocus required/>
                 <x-my.flt_lbl name="slug" label="{{__('نام شهر لاتین:')}}" dir="ltr" maxlength="40"

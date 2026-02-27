@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Province;
-use Flux\Flux;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Models\Field;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
@@ -10,12 +9,12 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 new
-#[Title('استانها')]
+#[Title('رشته های آموزشی')]
 class extends Component
 {
     use WithPagination;
 
-    public string $sortBy = 'name';
+    public string $sortBy = 'title';
 
     public string $sortDirection = 'asc';
 
@@ -32,37 +31,19 @@ class extends Component
         }
         $this->sortBy = $column;
         $this->sortDirection = 'asc';
-
     }
 
     #[Computed]
-    public function provinces(): LengthAwarePaginator
+    public function fields(): LengthAwarePaginator
     {
-        return Province::query()
+        return Field::query()
             ->orderBy($this->sortBy, $this->sortDirection)
-            ->withCount('cities')
+            ->withCount('standards')
             ->paginate($this->perPage);
     }
 
-
-    public function toggleStatus(int $provinceId): void
-    {
-        $province = Province::findOrFail($provinceId);
-
-        $province->update([
-            'is_active' => ! $province->is_active,
-        ]);
-
-        Flux::toast(
-            text: 'وضعیت استان با موفقیت تغییر کرد.',
-            heading: 'به‌روزرسانی شد',
-            variant: 'warning',
-            position: 'top right'
-        );
-    }
-
-    #[On('province-created')]
-    #[On('province-updated')]
+    #[On('field-created')]
+    #[On('field-updated')]
     public function focusRecord(?int $id = null): void
     {
         $this->reset(['sortBy', 'sortDirection']);
@@ -71,23 +52,21 @@ class extends Component
             return;
         }
 
-        $province = Province::find($id);
-        if (! $province) {
+        $field = Field::find($id);
+        if (! $field) {
             return;
         }
-        $beforeCount = Province::where('name', '<', $province->name)->count();
+        $beforeCount = Field::where('title', '<', $field->title)->count();
         $page = intdiv($beforeCount, $this->perPage) + 1;
         $this->gotoPage($page);
         $this->highlightedId = $id;
     }
-
-
-    #[On('province-deleted')]
+    #[On('field-deleted')]
     public function afterDelete(): void
     {
-        $provinces = $this->provinces();
+        $fields = $this->fields();
 
-        if ($provinces->isEmpty() && $provinces->currentPage() > 1) {
+        if ($fields->isEmpty() && $fields->currentPage() > 1) {
             $this->previousPage();
         }
     }

@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'ac' => EnsureContextIsSelected::class,
+            'role_select' => EnsureContextIsSelected::class,
             'role' => EnsureRole::class,
         ]);
     })

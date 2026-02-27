@@ -10,7 +10,7 @@ new class extends Component
     public string $name = '';
     public string $slug = '';
 
-    public bool $show_btn = true;
+    public bool $showBtn = true;
 
     protected function rules(): array
     {
@@ -28,16 +28,16 @@ new class extends Component
         $this->dispatch('province-created', id: $province->id);
 
         Flux::toast(
-            heading: 'ثبت شد.',
             text: 'استان جدید با موفقیت ثبت شد.',
+            heading: 'ثبت شد.',
             variant: 'success',
             position: 'top right'
         );
     }
 
-    public function reset_prop(): void
+    public function resetForm(): void
     {
-        $this->resetExcept('show_btn');
+        $this->resetExcept('showBtn');
         $this->resetErrorBag();
     }
 };

@@ -27,14 +27,17 @@ new class extends Component
         $this->slug = $this->province->slug;
     }
 
-    public function update_province(): void
+    public function update(): void
     {
-        $this->province->update($this->validate());
+        $validated = $this->validate();
+
+        $this->province->update($validated);
+
         $this->modal('edit-province-'.$this->province->id)->close();
         $this->dispatch('province-updated', id: $this->province->id);
         Flux::toast(
-            heading: 'تغییرات اعمال شد.',
             text: 'استان '.$this->name.' با موفقیت ویرایش شد.',
+            heading: 'تغییرات اعمال شد.',
             variant: 'warning',
             position: 'top right'
         );

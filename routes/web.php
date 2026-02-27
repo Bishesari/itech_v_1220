@@ -7,11 +7,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware(['auth', 'ac'])->group(function () {
+Route::middleware(['auth', 'role_select'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::livewire('roles', 'pages::role.index')->name('role.index')->middleware('role:super-admin');
     Route::livewire('provinces', 'pages::province.index')->name('province.index')->middleware('role:super-admin');
     Route::livewire('province/{province}/cities', 'pages::province.city.index')->name('city.index')->middleware('role:super-admin');
+    Route::livewire('fields', 'pages::filed.index')->name('field.index')->middleware('role:super-admin');
 });
 
 
