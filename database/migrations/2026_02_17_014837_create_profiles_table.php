@@ -37,9 +37,11 @@ return new class extends Migration
             $table->tinyInteger('maghta_id')->unsigned()->nullable();
             $table->string('reshte', 30)->nullable();
             $table->string('address', 150)->nullable();
-            $table->string('postal_code', 10)->nullable();
-            $table->string('image_url', 60)->nullable();
+            $table->char('postal_code', 10)->nullable();
+            $table->string('image_url', 250)->nullable();
             $table->timestamps();
+            $table->unique(['identifier_type', 'n_code']);
+
         });
     }
 

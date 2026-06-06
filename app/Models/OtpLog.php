@@ -8,10 +8,8 @@ class OtpLog extends Model
 {
     protected $fillable = ['ip', 'n_code', 'contact_value', 'otp', 'otp_next_try_time', 'otp_expires_at'];
 
-    protected function casts(): array
-    {
-        return [
-            'otp' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'otp' => 'hashed',
+    ];
+
 }

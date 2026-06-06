@@ -14,7 +14,7 @@ class CitySeeder extends Seeder
     public function run(): void
     {
         $cities = [
-            ['province_id' => 1, 'name' => 'بوشهر', 'slug' => 'Bushehr'],
+            ['province_id' => 1, 'name' => 'بوشهر', 'slug' => 'bushehr'],
         ];
         foreach ($cities as $data) {
             City::create($data);

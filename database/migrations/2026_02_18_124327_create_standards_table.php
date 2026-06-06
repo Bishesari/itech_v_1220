@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('standards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('field_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('field_id')->constrained()->restrictOnDelete();
             $table->string('code', 15)->unique();
             $table->string('name_fa', 100);
             $table->string('name_en', 100);
@@ -23,8 +23,10 @@ return new class extends Migration
             $table->decimal('project_h', 5, 1)->default(0);
             $table->decimal('required_h', 5, 1)->default(0);
             $table->decimal('sum_h', 6, 1)->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
+
+            $table->index(['field_id', 'is_active']);
         });
     }
 

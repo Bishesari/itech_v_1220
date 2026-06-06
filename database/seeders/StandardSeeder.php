@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Standard;
 use Illuminate\Database\Seeder;
 
 class StandardSeeder extends Seeder
@@ -12,6 +12,12 @@ class StandardSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Standard::create(['field_id' => 1, 'code' => '251340530000031', 'name_fa' => 'ساخت برنامه های وب با استفاده از Laravel Framework',
+            'name_en' => 'Build Web Apps Using Laravel Framework', 'nazari_h' => 30, 'amali_h' => 60, 'karvarzi_h' => 0,
+            'project_h' => 0, 'sum_h' => 90, 'required_h' => 120]);
+
+        Standard::create(['field_id' => 1, 'code' => '351230530000111', 'name_fa' => 'برنامه نویسی Python',
+            'name_en' => 'Programming Python', 'nazari_h' => 20, 'amali_h' => 90, 'karvarzi_h' => 0,
+            'project_h' => 0, 'sum_h' => 110, 'required_h' => 80]);
     }
 }

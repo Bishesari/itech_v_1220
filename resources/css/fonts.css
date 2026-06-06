@@ -57,6 +57,32 @@ This set of fonts are used in this project under the license: (.....)
 	src: url('fonts/Noora-ExtraBold.woff2') format('woff2')
 }
 
+@font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/IRANSansX-Bold.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/IRANSansX-Regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('fonts/Vazirmatn[wght].woff2') format('woff2 supports variations'),
+    url('fonts/Vazirmatn[wght].woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 body{
-    font-family: Noora;
+    font-family: IRANSansX;
+    /*font-family: Vazirmatn;*/
+    /*font-family: Noora;*/
 }

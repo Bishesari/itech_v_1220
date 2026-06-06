@@ -1,11 +1,9 @@
 <?php
 
-use App\Http\Middleware\EnsureContextIsSelected;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::livewire('/', 'pages::welcome')->name('home');
+
 
 Route::middleware(['auth', 'role_select'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
@@ -15,6 +13,6 @@ Route::middleware(['auth', 'role_select'])->group(function () {
     Route::livewire('fields', 'pages::filed.index')->name('field.index')->middleware('role:super-admin');
 });
 
-
 require __DIR__.'/auth.php';
 require __DIR__.'/settings.php';
+require __DIR__.'/pay.php';

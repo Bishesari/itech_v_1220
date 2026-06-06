@@ -1,4 +1,5 @@
 <?php
+
 function j_d_stamp_en()
 {
     return jdate('Y/m/d H:i:s', '', '', 'asia/Tehran', 'en');
@@ -6,8 +7,9 @@ function j_d_stamp_en()
 
 function fa_num($number): string
 {
-    $en = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
-    $fa = array("۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹");
+    $en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    $fa = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
     return str_replace($en, $fa, $number);
 }
 
@@ -17,14 +19,13 @@ function mob_form(string $mobile): string
     $part2 = substr($mobile, 4, 3);
     $part3 = substr($mobile, 7, 4);
 
-    return $part1 . ' ' . $part2 . ' ' . $part3;
+    return $part1.' '.$part2.' '.$part3;
 }
-
 
 function currency($num)
 {
     if (strlen($num) > 0) {
-        return number_format($num, 0, ".", ", ");
+        return number_format($num, 0, '.', ', ');
     } else {
         return $num;
     }
@@ -32,12 +33,20 @@ function currency($num)
 
 function mask_mobile(string $mobile): string
 {
-    return substr($mobile, -2) . '******' . substr($mobile, 0, 3) ;
+    return substr($mobile, -2).'******'.substr($mobile, 0, 3);
 }
 
-
-function j_date($gd){
+function j_date($gd)
+{
     $ts = strtotime($gd);
-    $df =  jdate('Y/m/d H:i:s', $ts, '', '', 'en');
+    $df = jdate('Y/m/d H:i:s', $ts, '', '', 'en');
+
     return $df;
+}
+
+if (! function_exists('price_format')) {
+    function price_format(?int $amount): string
+    {
+        return number_format($amount ?? 0).' تومان';
+    }
 }

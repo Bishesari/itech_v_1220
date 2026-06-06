@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('institute_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('institute_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('branch_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('role_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('institute_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('branch_id')->nullable()->constrained()->cascadeOnDelete();
             $table->boolean('is_last_selected')->default(false)->index();
             $table->boolean('is_active')->default(true)->index();
             $table->foreignId('assigned_by_id')->nullable()->constrained('users')->nullOnDelete();
@@ -24,6 +24,10 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['institute_id', 'branch_id', 'user_id', 'role_id'], 'unique_role_assignment');
+            $table->index(['user_id', 'is_active']);
+            $table->index(['role_id', 'is_active']);
+            $table->index(['institute_id', 'is_active']);
+            $table->index(['branch_id', 'is_active']);
         });
     }
 

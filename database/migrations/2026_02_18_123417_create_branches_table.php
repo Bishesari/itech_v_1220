@@ -13,27 +13,24 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
-
             // وابستگی به موسسه
-            $table->foreignId('institute_id')
-                ->constrained()
-                ->cascadeOnDelete()
-                ->index();
-
+            $table->foreignId('institute_id')->constrained()->cascadeOnDelete()->index();
             // مشخصات شعبه
-            $table->string('short_name', 30);
+            $table->string('short_name', 50);
             $table->string('code', 7);
 
             // آیا شعبه اصلی است؟
             $table->boolean('is_main')->default(false)->index();
 
             // موقعیت جغرافیایی
-            $table->foreignId('province_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('city_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('province_id')->constrained()->restrictOnDelete();
+            $table->foreignId('city_id')->constrained()->restrictOnDelete();
+
 
             // اطلاعات تماس
             $table->string('address', 150)->nullable();
-            $table->string('postal_code', 10)->nullable()->index();
+            $table->char('postal_code', 10)->nullable()->index();
+
             $table->string('phone', 15)->nullable();
             $table->string('mobile', 15)->nullable();
 
